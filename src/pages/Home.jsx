@@ -1,26 +1,21 @@
-import CarousalGenre from '../components/CarousalGenre';
-import CarousalTrending from '../components/CarousalTrending';
 import Hero from '../components/Home/Hero';
+import LatestMovie from '../components/Home/LatestMovie';
+import TrendingShows from '../components/Home/TrendingShows';
 import TrendingList from '../components/Home/TrendingList';
+import PopularShows from '../components/Home/PopularShows';
 
 function Home() {
   return (
-    <div className="flex h-[620px]">
-      <Hero />
-      <TrendingList />
+    <div className="px-10 flex flex-col gap-16">
+      <div className="flex h-[620px] gap-5">
+        <Hero />
+        <TrendingList />
+      </div>
+      <LatestMovie />
+      <TrendingShows />
+      <PopularShows />
     </div>
   );
 }
-
-// function Homea() {
-//   return (
-//     <div>
-//       <CarousalGenre genre="Drama" genre_id={18} />
-//       <CarousalGenre genre="Adventure" genre_id={12} />
-//       <CarousalGenre genre="Action" genre_id={28} />
-//       <CarousalTrending genre="Action" genre_id={28} />
-//     </div>
-//   );
-// }
 
 export default Home;

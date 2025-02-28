@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Tag = ({ name, selected, setCurrentSelection }) => {
@@ -8,7 +7,7 @@ const Tag = ({ name, selected, setCurrentSelection }) => {
       className={`h-[30px] px-4 rounded-[15px] flex items-center text-base cursor-pointer font-medium ${
         selected
           ? 'bg-orange-500 hover:bg-orange-300 text-black'
-          : 'hover:bg-white border border-white'
+          : 'hover:bg-white hover:text-black border border-white'
       }`}
     >
       {name}
@@ -18,6 +17,8 @@ const Tag = ({ name, selected, setCurrentSelection }) => {
 
 Tag.propTypes = {
   name: PropTypes.string.isRequired,
+  selected: PropTypes.bool,
+  setCurrentSelection: PropTypes.func,
 };
 
 export default Tag;

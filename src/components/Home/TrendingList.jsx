@@ -7,7 +7,7 @@ const TrendingList = () => {
   const [currentSelection, setCurrentSelection] = useState('Movies');
 
   return (
-    <div className="grow h-full">
+    <div className="w-[30%] h-full">
       <div className="flex gap-4 items-center py-2">
         <TrendingUpIcon fontSize="large" />
         <h2 className="mr-auto text-[25px] font-bold">TRENDING</h2>
