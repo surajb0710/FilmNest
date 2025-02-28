@@ -1,24 +1,24 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
-import styles from './TopDramaCarousal.module.css';
-import Card from './Card';
+import styles from './CarousalGenre.module.css';
+import Card from './CardSimple';
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-function TopDramaCarousal() {
+const API_KEY = '97fa55c8dd12d8b5fe0dd2e2bbdcc716';
+
+const CarousalGenre = ({ genre, genre_id }) => {
   // State to store the movie data
   const [movies, setMovies] = useState([]);
   // State to handle loading and errors
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // TMDB API key
-  const API_KEY = '97fa55c8dd12d8b5fe0dd2e2bbdcc716'; // Replace with your actual API key
-
   useEffect(() => {
     // Fetch movie data
     const fetchMovies = async () => {
-      const URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&with_genres=18&sort_by=popularity.desc&page=1`;
+      const URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&with_genres=${genre_id}&sort_by=popularity.desc&page=1`;
 
       try {
         const response = await fetch(URL);
@@ -40,7 +40,7 @@ function TopDramaCarousal() {
     };
 
     fetchMovies();
-  }, []);
+  }, [genre_id]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -54,7 +54,7 @@ function TopDramaCarousal() {
   };
   return (
     <div className={styles.sliderContainer}>
-      <h2>Top Drama Shows</h2>
+      <h2>Top {genre} Shows</h2>
       <Slider {...settings} className="slider">
         {movies.map((movie) => (
           <div key={movie.id}>
@@ -64,6 +64,11 @@ function TopDramaCarousal() {
       </Slider>
     </div>
   );
-}
+};
 
-export default TopDramaCarousal;
+CarousalGenre.propTypes = {
+  genre: PropTypes.string.isRequired,
+  genre_id: PropTypes.number.isRequired,
+};
+
+export default CarousalGenre;

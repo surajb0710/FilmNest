@@ -1,26 +1,24 @@
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Slider from 'react-slick';
-import styles from './Carousal.module.css';
-import Card from './Card';
+import Card from './CardSimple';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-// const API_KEY = process.env.TMDB_APP_API_KEY;
-
 const API_KEY = '97fa55c8dd12d8b5fe0dd2e2bbdcc716';
+const PAGE_NO = 1;
 
-const Carousal = ({ genre, genre_id }) => {
+const carousalPagination = ({ genre, genre_id }) => {
   // State to store the movie data
   const [movies, setMovies] = useState([]);
   // State to handle loading and errors
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  https: useEffect(() => {
     // Fetch movie data
     const fetchMovies = async () => {
-      const URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&with_genres=${genre_id}&sort_by=popularity.desc&page=1`;
+      const URL = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&page=${PAGE_NO}`;
 
       try {
         const response = await fetch(URL);
@@ -48,16 +46,38 @@ const Carousal = ({ genre, genre_id }) => {
   if (error) return <div>Error: {error}</div>;
 
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
+    arrows: false,
     speed: 500,
-    slidesToShow: 7,
+    slidesToShow: 1,
     slidesToScroll: 1,
+    appendDots: (dots) => (
+      <div
+        style={{
+          backgroundColor: '#ddd',
+          borderRadius: '10px',
+          padding: '10px',
+        }}
+      >
+        <ul style={{ margin: '0px' }}> {dots} </ul>
+      </div>
+    ),
+    customPaging: (i) => (
+      <div
+        style={{
+          width: '30px',
+          color: 'blue',
+          border: '1px blue solid',
+        }}
+      >
+        {i + 1}
+      </div>
+    ),
   };
   return (
-    <div className={styles.sliderContainer}>
-      <h2>Top {genre} Shows</h2>
-      <Slider {...settings} className="slider">
+    <div className="slider-container">
+      <Slider {...settings}>
         {movies.map((movie) => (
           <div key={movie.id}>
             <Card movie={movie} />
@@ -68,9 +88,8 @@ const Carousal = ({ genre, genre_id }) => {
   );
 };
 
-Carousal.propTypes = {
+carousalPagination.propTypes = {
   genre: PropTypes.string.isRequired,
   genre_id: PropTypes.number.isRequired,
 };
-
-export default Carousal;
+export default carousalPagination;

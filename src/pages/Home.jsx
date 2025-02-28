@@ -1,21 +1,26 @@
-import './Home.css';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import Carousal from '../components/Carousal';
-import TopDramaCarousal from '../components/TopDramaCarousal';
+import CarousalGenre from '../components/CarousalGenre';
+import CarousalTrending from '../components/CarousalTrending';
+import Hero from '../components/Home/Hero';
+import TrendingList from '../components/Home/TrendingList';
 
 function Home() {
-  const genre = 'Action';
-  const genre_id = 28;
-
   return (
-    <div>
-      <Navbar />
-      <TopDramaCarousal />
-      <Carousal genre={genre} genre_id={genre_id} />
-      <Footer />
+    <div className="flex h-[620px]">
+      <Hero />
+      <TrendingList />
     </div>
   );
 }
+
+// function Homea() {
+//   return (
+//     <div>
+//       <CarousalGenre genre="Drama" genre_id={18} />
+//       <CarousalGenre genre="Adventure" genre_id={12} />
+//       <CarousalGenre genre="Action" genre_id={28} />
+//       <CarousalTrending genre="Action" genre_id={28} />
+//     </div>
+//   );
+// }
 
 export default Home;

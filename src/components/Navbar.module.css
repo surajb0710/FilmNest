@@ -12,6 +12,16 @@
   font-weight: 500;
 }
 
+.linksNavbar {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+}
+
+.navItem {
+  position: relative;
+}
+
 .navbarLink {
   text-decoration: none;
   flex-grow: 0;

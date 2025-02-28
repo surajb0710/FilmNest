@@ -1,30 +1,40 @@
 import styles from './Navbar.module.css';
 import { IoSearchSharp } from 'react-icons/io5';
+import NavDropdownItem from './NavDropdownItem';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbarLogo}>FilmNest</div>
-      <div>
-        <a href="/" className={styles.navbarLink}>
-          New
-        </a>
-        <a href="/" className={styles.navbarLink}>
-          Popular
-        </a>
-        <a href="/" className={styles.navbarLink}>
-          Movies
-        </a>
-        <a href="/" className={styles.navbarLink}>
-          TV Shows
-        </a>
-        <a href="/" className={styles.navbarLink}>
-          Top Rated
-        </a>
-        <a href="/" className={styles.navbarLink}>
-          Upcoming
-        </a>
-      </div>
+      <ul className={styles.linksNavbar}>
+        <NavDropdownItem className={styles.dropdownItem} />
+        <li className="nav-item">
+          <a href="/" className={styles.navbarLink}>
+            Popular
+          </a>
+        </li>
+        <li className="nav-item">
+          <Link to="/movies" className={styles.navbarLink}>
+            Movies
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/tvshows" className={styles.navbarLink}>
+            TV Shows
+          </Link>
+        </li>
+        <li className="nav-item">
+          <a href="/" className={styles.navbarLink}>
+            Top Rated
+          </a>
+        </li>
+        <li className="nav-item">
+          <a href="/" className={styles.navbarLink}>
+            Upcoming
+          </a>
+        </li>
+      </ul>
       <div className={styles.navbarSearchContainer}>
         <IoSearchSharp className={styles.searchIcon} />
         <input

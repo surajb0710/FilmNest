@@ -1,7 +1,7 @@
-import styles from './Card.module.css';
+import styles from './CardSimple.module.css';
 import PropTypes from 'prop-types';
 
-const Card = ({ movie }) => {
+const CardSimple = ({ movie }) => {
   return (
     <div className={styles.card}>
       <img
@@ -22,7 +22,7 @@ const Card = ({ movie }) => {
   );
 };
 
-Card.propTypes = {
+CardSimple.propTypes = {
   movie: PropTypes.shape({
     id: PropTypes.number.isRequired,
     original_title: PropTypes.string.isRequired,
@@ -32,4 +32,4 @@ Card.propTypes = {
   }).isRequired,
 };
 
-export default Card;
+export default CardSimple;
