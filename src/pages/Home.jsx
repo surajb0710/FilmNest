@@ -13,7 +13,7 @@ function Home() {
       </div>
       <LatestMovie />
       <TrendingShows />
-      <PopularShows />
+      {/* <PopularShows /> */}
     </div>
   );
 }

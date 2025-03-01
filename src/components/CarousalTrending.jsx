@@ -11,7 +11,6 @@ const API_KEY = '97fa55c8dd12d8b5fe0dd2e2bbdcc716';
 const CarousalTrending = ({ genre, genre_id }) => {
   // State to store the movie data
   const [movies, setMovies] = useState([]);
-  // State to handle loading and errors
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
