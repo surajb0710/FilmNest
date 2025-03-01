@@ -7,7 +7,7 @@ import Slider from 'react-slick';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
-  const [movieList, setMoviesList] = useState([]);
+  const [movieList, setMovieList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,28 +17,34 @@ const Movies = () => {
   useEffect(() => {
     setLoading(true);
     const fetchMovies = async () => {
-      let allMovies = [];
+      let moviesList = [];
 
       try {
-        for (let i = 1; i <= currentPage * 2; i++) {
-          const URL = `https://api.themoviedb.org/3/movie/popular?api_key=${
-            import.meta.env.VITE_TMDB_API_KEY
-          }&page=${i}`;
+        for (let i = 1; i <= 5; i++) {
+          let allMovies = []; // Stores 40 movies for custom page `i`
 
-          const response = await fetch(URL);
+          for (let j = i * 2 - 1; j <= i * 2; j++) {
+            const URL = `https://api.themoviedb.org/3/movie/popular?api_key=${
+              import.meta.env.VITE_TMDB_API_KEY
+            }&page=${j}`;
 
-          if (!response.ok) {
-            throw new Error('Failed to fetch movies');
+            const response = await fetch(URL);
+
+            if (!response.ok) {
+              throw new Error('Failed to fetch movies');
+            }
+            const data = await response.json();
+
+            allMovies = allMovies.concat(data.results); // Collecting 40 movies (20 per API call)
           }
-          const data = await response.json();
 
-          const start = currentPage === 1 ? 0 : currentPage * 40 - 1;
-          const end = start + 40;
-
-          allMovies = allMovies.concat(data.results.slice(start, end));
+          moviesList.push({ page: i, allMovies: allMovies }); // Save to custom page list
         }
 
-        setMovies(allMovies);
+        setMovieList(moviesList);
+        setMovies(
+          moviesList.find((m) => m.page === currentPage)?.allMovies || []
+        );
       } catch (error) {
         setError(error.message);
       } finally {
@@ -51,6 +57,8 @@ const Movies = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
+  console.log('----movieList---', movieList);
 
   const settings = {
     dots: true,
@@ -89,26 +97,14 @@ const Movies = () => {
     <div className="">
       <h1 className="text-[25px]">{sectionName}</h1>
       <div className="slider-container px-10">
-        <h2>Test</h2>
         <Slider {...settings}>
-          <div className="!grid grid-cols-8 gap-y-8">
-            {movies.length > 0 &&
-              movies.map((movie) => (
+          {movieList.map((movies) => (
+            <div className="!grid grid-cols-8 gap-y-8" key={movies.page}>
+              {movies.allMovies.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} showType={'Movies'} />
               ))}
-          </div>
-          <div className="!grid grid-cols-8 gap-y-8">
-            {movies.length > 0 &&
-              movies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} showType={'Movies'} />
-              ))}
-          </div>
-          <div className="!grid grid-cols-8 gap-y-8">
-            {movies.length > 0 &&
-              movies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} showType={'Movies'} />
-              ))}
-          </div>
+            </div>
+          ))}
         </Slider>
       </div>
     </div>
@@ -116,3 +112,11 @@ const Movies = () => {
 };
 
 export default Movies;
+
+// Every array in setMovieList should have 40 items only, So every time allMovies is being pushed to setMovieList, it needs to have 40 items
+
+// Since, TMDB gives us only 20 items per page, we are pulling 40 items and creating our custom movie list array which will have page numbers and 40 movie items.
+// i is the custom page number and j is the actual page number that is being passed 2 times into the url
+// Now, the allMovies should have 40 movie items from actual pages 1 and 2 which will be passed to custom page number 1
+// Similarly, the allMovies will always have 40 movie items from actual pages which will be passed to custom pages
+// Can you modify the logic to accomodate the above changes
