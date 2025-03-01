@@ -15,12 +15,12 @@ const PopularShows = () => {
         <Tag
           name="Movies"
           setCurrentSelection={setCurrentSelection}
-          selected={currentSelection === 'Movies' && 'true'}
+          selected={currentSelection === 'Movies' && true}
         />
         <Tag
           name="Shows"
           setCurrentSelection={setCurrentSelection}
-          selected={currentSelection === 'Shows' && 'true'}
+          selected={currentSelection === 'Shows' && true}
         />
       </div>
       <div className="flex justify-between">

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 const TrendingListItem = ({ movie, showType, index }) => {
   const fullPosterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
   const [lastEpisodeToAir, setLastEpisodeToAir] = useState({});
+  const [currentMovie, setCurrentMovie] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -42,7 +43,33 @@ const TrendingListItem = ({ movie, showType, index }) => {
     fetchShowInfo();
   }, [showType, movie?.id]);
 
-  showType === 'Movies' && console.log('-----Movie-----', movie);
+  useEffect(() => {
+    if (showType !== 'Movies' || !movie?.id) return;
+
+    const fetchMovieInfo = async () => {
+      const URL = `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${
+        import.meta.env.VITE_TMDB_API_KEY
+      }`;
+
+      try {
+        const response = await fetch(URL);
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch TV show details');
+        }
+
+        const data = await response.json();
+
+        setCurrentMovie(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovieInfo();
+  }, [showType, movie?.id]);
 
   return (
     <div className="relative">
@@ -53,14 +80,14 @@ const TrendingListItem = ({ movie, showType, index }) => {
         <div className="ml-[15px] pr-[15px] flex gap-4 bg-gray-800 items-center">
           <img src={fullPosterUrl} alt="" className="h-[75px] w-[50px]" />
           <div>
-            <p className="text-base">{movie.title}</p>
-            <div>
+            <p className="text-base">{currentMovie.title}</p>
+            <div className="flex gap-4">
               <p>Movie</p>
-              <p>{movie.runtime}</p>
+              <p>{currentMovie.runtime}</p>
             </div>
           </div>
           <p className="text-sm text-gray-400 ml-auto">
-            {movie.release_date.slice(0, 4)}
+            {currentMovie.release_date && currentMovie.release_date.slice(0, 4)}
           </p>
         </div>
       ) : (
@@ -68,7 +95,7 @@ const TrendingListItem = ({ movie, showType, index }) => {
           <img src={fullPosterUrl} alt="" className="h-[75px] w-[50px]" />
           <div>
             <p className="text-base">{movie.name}</p>
-            <div className="flex gap-2">
+            <div className="flex gap-4">
               <p>TV</p>
               <p>{`EP ${lastEpisodeToAir.episode_number}`}</p>
               <p>{`SS ${lastEpisodeToAir.season_number}`}</p>

@@ -1,8 +1,9 @@
 import MovieCard from '../Cards/MovieCard';
 import Tag from '../Common/Tag';
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-const TrendingShows = () => {
+const TrendingShows = ({ url, sectionName }) => {
   const [currentSelection, setCurrentSelection] = useState('Movies');
 
   const [movies, setMovies] = useState([]);
@@ -12,9 +13,25 @@ const TrendingShows = () => {
   useEffect(() => {
     setLoading(true);
     const fetchMovies = async () => {
-      const baseURL = `https://api.themoviedb.org/3/trending/${
-        currentSelection === 'Movies' ? 'movie' : 'tv'
-      }/week`;
+      let baseURL = '';
+
+      if (sectionName === 'Trending Shows') {
+        baseURL = `${url}/${
+          currentSelection === 'Movies' ? 'movie' : 'tv'
+        }/week`;
+      }
+
+      if (sectionName === 'Popular Shows') {
+        baseURL = `${url}/${
+          currentSelection === 'Movies' ? 'movie' : 'tv'
+        }/popular`;
+      }
+
+      if (sectionName === 'Top Rated') {
+        baseURL = `${url}/${
+          currentSelection === 'Movies' ? 'movie' : 'tv'
+        }/top_rated`;
+      }
 
       const URL = `${baseURL}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
 
@@ -49,7 +66,7 @@ const TrendingShows = () => {
   return (
     <div className="">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-[25px]">Trending Shows</h2>
+        <h2 className="text-[25px]">{sectionName}</h2>
         <Tag name="View More" />
       </div>
       <div className="flex gap-4 mb-4">
@@ -76,6 +93,11 @@ const TrendingShows = () => {
       </div>
     </div>
   );
+};
+
+TrendingShows.propTypes = {
+  url: PropTypes.string.isRequired,
+  sectionName: PropTypes.string.isRequired,
 };
 
 export default TrendingShows;

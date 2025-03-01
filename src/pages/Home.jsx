@@ -11,11 +11,23 @@ function Home() {
         <Hero />
         <TrendingList />
       </div>
-      <LatestMovie />
-      <TrendingShows />
-      {/* <PopularShows /> */}
+      <TrendingShows
+        url="https://api.themoviedb.org/3"
+        sectionName="Popular Shows"
+      />
+      <TrendingShows
+        url="https://api.themoviedb.org/3/trending"
+        sectionName="Trending Shows"
+      />
+      <TrendingShows
+        url="https://api.themoviedb.org/3"
+        sectionName="Top Rated"
+      />
     </div>
   );
 }
 
 export default Home;
+
+// https://api.themoviedb.org/3/tv/top_rated
+// https://api.themoviedb.org/3/movie/top_rated

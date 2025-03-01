@@ -38,7 +38,7 @@ const LatestMovie = () => {
   return (
     <div className="">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-[25px]">Latest Movies</h2>
+        <h2 className="text-[25px]">Popular Movies</h2>
         <Tag name="View More" />
       </div>
       <div className="grid grid-cols-8 grid-rows-2 gap-y-8">
