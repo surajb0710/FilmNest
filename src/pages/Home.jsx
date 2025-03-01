@@ -1,8 +1,6 @@
 import Hero from '../components/Home/Hero';
-import LatestMovie from '../components/Home/LatestMovie';
 import TrendingShows from '../components/Home/TrendingShows';
 import TrendingList from '../components/Home/TrendingList';
-import PopularShows from '../components/Home/PopularShows';
 
 function Home() {
   return (
@@ -28,6 +26,3 @@ function Home() {
 }
 
 export default Home;
-
-// https://api.themoviedb.org/3/tv/top_rated
-// https://api.themoviedb.org/3/movie/top_rated

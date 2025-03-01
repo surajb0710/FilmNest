@@ -2,13 +2,16 @@ import MovieCard from '../Cards/MovieCard';
 import Tag from '../Common/Tag';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 const TrendingShows = ({ url, sectionName }) => {
   const [currentSelection, setCurrentSelection] = useState('Movies');
-
+  const [navigationUrl, setNavigationUrl] = useState('/movies');
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -61,13 +64,22 @@ const TrendingShows = ({ url, sectionName }) => {
   const handleCurrentSelection = (name) => {
     setCurrentSelection(name);
     setMovies([]);
+    setNavigationUrl(`/${name.toLowerCase()}`);
+  };
+
+  const handleClick = () => {
+    navigate(navigationUrl);
   };
 
   return (
     <div className="">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-[25px]">{sectionName}</h2>
-        <Tag name="View More" />
+        <Tag
+          name="View More"
+          handleClick={handleClick}
+          navigationUrl={navigationUrl}
+        />
       </div>
       <div className="flex gap-4 mb-4">
         <Tag
