@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { HashLink } from 'react-router-hash-link';
+import { useLocation } from 'react-router-dom';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
@@ -13,18 +14,51 @@ const Movies = () => {
   const [lastPage, setLastPage] = useState(5);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const sectionName = 'Popular Shows';
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const queryParameter = queryParams.get('query') || 'popular';
+  const [sectionName, setSectionName] = useState('');
 
   const fetchMovies = async (pageNumber) => {
     try {
-      const URL1 = `https://api.themoviedb.org/3/movie/popular?api_key=${
-        import.meta.env.VITE_TMDB_API_KEY
-      }&page=${pageNumber}`;
+      let URL1 = '';
+      let URL2 = '';
 
-      const URL2 = `https://api.themoviedb.org/3/movie/popular?api_key=${
-        import.meta.env.VITE_TMDB_API_KEY
-      }&page=${pageNumber + 1}`;
+      if (queryParameter === 'popular') {
+        URL1 = `https://api.themoviedb.org/3/movie/popular?api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }&page=${pageNumber}`;
+
+        URL2 = `https://api.themoviedb.org/3/movie/popular?api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }&page=${pageNumber + 1}`;
+
+        setSectionName('Popular Shows');
+      }
+
+      if (queryParameter === 'trending') {
+        URL1 = `https://api.themoviedb.org/3/trending/movie/week?api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }&page=${pageNumber}`;
+
+        URL2 = `https://api.themoviedb.org/3/trending/movie/week?api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }&page=${pageNumber + 1}`;
+
+        setSectionName('Trending Shows');
+      }
+
+      if (queryParameter === 'toprated') {
+        URL1 = `https://api.themoviedb.org/3/movie/top_rated?api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }&page=${pageNumber}`;
+
+        URL2 = `https://api.themoviedb.org/3/movie/top_rated?api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }&page=${pageNumber + 1}`;
+
+        setSectionName('Top Rated');
+      }
 
       const [res1, res2] = await Promise.all([fetch(URL1), fetch(URL2)]);
 

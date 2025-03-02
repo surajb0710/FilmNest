@@ -3,6 +3,7 @@ import Tag from '../Common/Tag';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const TrendingShows = ({ url, sectionName }) => {
   const [currentSelection, setCurrentSelection] = useState('Movies');
@@ -10,8 +11,25 @@ const TrendingShows = ({ url, sectionName }) => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [queryParameter, setQueryParameter] = useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    switch (sectionName) {
+      case 'Trending Shows':
+        setQueryParameter('trending');
+        break;
+
+      case 'Popular Shows':
+        setQueryParameter('popular');
+        break;
+
+      default:
+        setQueryParameter('toprated');
+        break;
+    }
+  }, [sectionName]);
 
   useEffect(() => {
     setLoading(true);
@@ -75,11 +93,19 @@ const TrendingShows = ({ url, sectionName }) => {
     <div className="">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-[25px]">{sectionName}</h2>
-        <Tag
-          name="View More"
-          handleClick={handleClick}
-          navigationUrl={navigationUrl}
-        />
+        <Link
+          to={`${
+            currentSelection === 'Movies'
+              ? `/movies?query=${queryParameter}`
+              : '/shows'
+          }`}
+        >
+          <Tag
+            name="View More"
+            handleClick={handleClick}
+            navigationUrl={navigationUrl}
+          />
+        </Link>
       </div>
       <div className="flex gap-4 mb-4">
         <Tag

@@ -6,14 +6,18 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   return (
     <nav className={styles.navbar} id="top-anchor">
-      <div className={styles.navbarLogo}>FilmNest</div>
+      <div className={styles.navbarLogo}>
+        <Link to="/" className={styles.navbarLink}>
+          FilmNest
+        </Link>
+      </div>
       <ul className={styles.linksNavbar}>
-        <NavDropdownItem className={styles.dropdownItem} />
-        <li className="nav-item">
+        {/* <NavDropdownItem className={styles.dropdownItem} /> */}
+        {/* <li className="nav-item">
           <a href="/" className={styles.navbarLink}>
             Popular
           </a>
-        </li>
+        </li> */}
         <li className="nav-item">
           <Link to="/movies" className={styles.navbarLink}>
             Movies
@@ -24,7 +28,7 @@ function Navbar() {
             TV Shows
           </Link>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <a href="/" className={styles.navbarLink}>
             Top Rated
           </a>
@@ -33,7 +37,7 @@ function Navbar() {
           <a href="/" className={styles.navbarLink}>
             Upcoming
           </a>
-        </li>
+        </li> */}
       </ul>
       <div className={styles.navbarSearchContainer}>
         <IoSearchSharp className={styles.searchIcon} />
