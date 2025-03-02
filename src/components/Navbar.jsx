@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <nav className={styles.navbar}>
+    <nav className={styles.navbar} id="top-anchor">
       <div className={styles.navbarLogo}>FilmNest</div>
       <ul className={styles.linksNavbar}>
         <NavDropdownItem className={styles.dropdownItem} />

@@ -1,122 +1,153 @@
 import LatestMovies from '../components/Home/LatestMovie';
 import MovieCard from '../components/Cards/MovieCard';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
-import Slider from 'react-slick';
+import { HashLink } from 'react-router-hash-link';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [movieList, setMovieList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [firstPage, setFirstPage] = useState(1);
+  const [lastPage, setLastPage] = useState(5);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const sectionName = 'Popular Shows';
 
-  useEffect(() => {
-    setLoading(true);
-    const fetchMovies = async () => {
-      let moviesList = [];
+  const fetchMovies = async (pageNumber) => {
+    try {
+      const URL1 = `https://api.themoviedb.org/3/movie/popular?api_key=${
+        import.meta.env.VITE_TMDB_API_KEY
+      }&page=${pageNumber}`;
 
-      try {
-        for (let i = 1; i <= 5; i++) {
-          let allMovies = []; // Stores 40 movies for custom page `i`
+      const URL2 = `https://api.themoviedb.org/3/movie/popular?api_key=${
+        import.meta.env.VITE_TMDB_API_KEY
+      }&page=${pageNumber + 1}`;
 
-          for (let j = i * 2 - 1; j <= i * 2; j++) {
-            const URL = `https://api.themoviedb.org/3/movie/popular?api_key=${
-              import.meta.env.VITE_TMDB_API_KEY
-            }&page=${j}`;
+      const [res1, res2] = await Promise.all([fetch(URL1), fetch(URL2)]);
 
-            const response = await fetch(URL);
-
-            if (!response.ok) {
-              throw new Error('Failed to fetch movies');
-            }
-            const data = await response.json();
-
-            allMovies = allMovies.concat(data.results); // Collecting 40 movies (20 per API call)
-          }
-
-          moviesList.push({ page: i, allMovies: allMovies }); // Save to custom page list
-        }
-
-        setMovieList(moviesList);
-        setMovies(
-          moviesList.find((m) => m.page === currentPage)?.allMovies || []
-        );
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+      if (!res1.ok || !res2.ok) {
+        throw new Error('Failed to fetch movies');
       }
+
+      const data1 = await res1.json();
+      const data2 = await res2.json();
+
+      return {
+        page: pageNumber,
+        allMovies: [...data1.results, ...data2.results],
+      };
+    } catch (error) {
+      setError(error.message);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const loadInitialMovies = async () => {
+      setLoading(true);
+      let initialMoviesList = [];
+      for (let i = firstPage; i <= lastPage; i++) {
+        const newPageData = await fetchMovies(i);
+        if (newPageData) initialMoviesList.push(newPageData);
+      }
+      setMovieList(initialMoviesList);
+      setMovies(initialMoviesList[0]?.allMovies || []);
+      setLoading(false);
     };
 
-    fetchMovies();
-  }, [currentPage]);
+    loadInitialMovies();
+  }, []);
+
+  const handleNext = async () => {
+    const nextPage = lastPage + 1;
+    const newPageData = await fetchMovies(nextPage);
+    if (!newPageData) return;
+
+    const updatedMovieList = [...movieList.slice(1), newPageData];
+    setMovieList(updatedMovieList);
+    setMovies(newPageData.allMovies);
+    setFirstPage((prev) => prev + 1);
+    setLastPage(nextPage);
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrev = async () => {
+    if (firstPage === 1) return;
+
+    const prevPage = firstPage - 1;
+    const newPageData = await fetchMovies(prevPage);
+    if (!newPageData) return;
+
+    const updatedMovieList = [newPageData, ...movieList.slice(0, -1)];
+    setMovieList(updatedMovieList);
+    setMovies(newPageData.allMovies);
+    setFirstPage(prevPage);
+    setLastPage((prev) => prev - 1);
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handlePageClick = (pageNumber) => {
+    const pageData = movieList.find((movie) => movie.page === pageNumber);
+    if (pageData) {
+      setMovies(pageData.allMovies);
+      setCurrentPage(pageNumber);
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  console.log('----movieList---', movieList);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    appendDots: (dots) => (
-      <div
-        style={{
-          backgroundColor: '#ddd',
-          borderRadius: '10px',
-          padding: '10px',
-        }}
-      >
-        <ul style={{ margin: '0px' }}> {dots} </ul>
-      </div>
-    ),
-    customPaging: (i) => (
-      <div
-        style={{
-          width: '30px',
-          color: 'blue',
-          border: '1px blue solid',
-        }}
-      >
-        {i + 1}
-      </div>
-    ),
-  };
-
-  console.log('------Movies-----', movies);
-
   return (
     <div className="">
-      <h1 className="text-[25px]">{sectionName}</h1>
-      <div className="slider-container px-10">
-        <Slider {...settings}>
-          {movieList.map((movies) => (
-            <div className="!grid grid-cols-8 gap-y-8" key={movies.page}>
-              {movies.allMovies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} showType={'Movies'} />
-              ))}
-            </div>
+      <h1 className="text-4xl font-extrabold text-center my-10">
+        {sectionName}
+      </h1>
+      <div className="px-10">
+        <div className="!grid grid-cols-8 gap-y-8" key={currentPage}>
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} showType={'Movies'} />
           ))}
-        </Slider>
+        </div>
+      </div>
+      <div className="flex gap-1 justify-center items-center mt-10">
+        <HashLink smooth to="/movies#top-anchor">
+          <button
+            onClick={handlePrev}
+            className={`cursor-pointer bg-green-500 px-2 ${
+              firstPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={firstPage === 1}
+          >
+            Prev
+          </button>
+        </HashLink>
+        {movieList.map((page) => (
+          <HashLink smooth to="/movies#top-anchor">
+            <button
+              key={page.page}
+              onClick={() => handlePageClick(page.page)}
+              className={`h-6 w-6 flex items-center justify-center text-base ${
+                currentPage === page.page ? 'bg-blue-500' : 'bg-green-500'
+              } text-white cursor-pointer`}
+            >
+              {page.page}
+            </button>
+          </HashLink>
+        ))}
+        <HashLink smooth to="/movies#top-anchor">
+          <button
+            onClick={handleNext}
+            className="cursor-pointer bg-green-500 px-2"
+          >
+            Next
+          </button>
+        </HashLink>
       </div>
     </div>
   );
 };
 
 export default Movies;
-
-// Every array in setMovieList should have 40 items only, So every time allMovies is being pushed to setMovieList, it needs to have 40 items
-
-// Since, TMDB gives us only 20 items per page, we are pulling 40 items and creating our custom movie list array which will have page numbers and 40 movie items.
-// i is the custom page number and j is the actual page number that is being passed 2 times into the url
-// Now, the allMovies should have 40 movie items from actual pages 1 and 2 which will be passed to custom page number 1
-// Similarly, the allMovies will always have 40 movie items from actual pages which will be passed to custom pages
-// Can you modify the logic to accomodate the above changes
