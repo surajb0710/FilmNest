@@ -1,7 +1,5 @@
 import StarIcon from '@mui/icons-material/Star';
 import ImdbTag from '../components/Common/ImdbTag';
-import RecommendedShows from '../components/Common/RecommendedShows';
-import TrendingList from '../components/Home/TrendingList';
 
 const ShowInfo = () => {
   return (
@@ -66,10 +64,7 @@ const ShowInfo = () => {
           </div>
         </div>
       </div>
-      <div className="flex gap-4">
-        <RecommendedShows />
-        <TrendingList />
-      </div>
+      <div className="flex gap-4"></div>
     </div>
   );
 };
