@@ -42,7 +42,9 @@ const MovieCard = ({ movie, showType }) => {
         alt=""
         className="h-[260px] w-[170px] rounded-lg mb-4"
       />
-      <h3 className="text-base font-semibold mb-2 text-wrap">{movie.title}</h3>
+      <h3 className="text-base font-semibold mb-2 text-wrap">
+        {movie.title || movie.name}
+      </h3>
       <div className="flex gap-4">
         <p className="text-sm">{showType === 'Movies' ? 'Movie' : 'TV'}</p>
         {showType === 'Movies' ? (

@@ -3,41 +3,14 @@ import Tag from '../Common/Tag';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingListItem from '../Cards/TrendingListItem';
 
-const TrendingList = () => {
-  const [currentSelection, setCurrentSelection] = useState('Movies');
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchMovies = async () => {
-      const baseURL = `https://api.themoviedb.org/3/trending/${
-        currentSelection === 'Movies' ? 'movie' : 'tv'
-      }/week`;
-
-      const URL = `${baseURL}?api_key=${import.meta.env.VITE_TMDB_API_KEY}`;
-
-      try {
-        const response = await fetch(URL);
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch movies');
-        }
-
-        const data = await response.json();
-
-        setMovies(data.results.slice(0, 6));
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMovies();
-  }, [currentSelection]);
-
+const TrendingList = ({
+  movies,
+  setCurrentSelection,
+  currentSelection,
+  setMovies,
+  loading,
+  error,
+}) => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -64,14 +37,16 @@ const TrendingList = () => {
       </div>
       <div className="flex flex-col gap-4">
         {movies.length > 0 &&
-          movies.map((movie, index) => (
-            <TrendingListItem
-              key={movie.id}
-              movie={movie}
-              showType={currentSelection}
-              index={index}
-            />
-          ))}
+          movies
+            .slice(0, 6)
+            .map((movie, index) => (
+              <TrendingListItem
+                key={movie.id}
+                movie={movie}
+                showType={currentSelection}
+                index={index}
+              />
+            ))}
       </div>
     </div>
   );
