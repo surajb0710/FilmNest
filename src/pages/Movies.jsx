@@ -17,47 +17,56 @@ const Movies = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const queryParameter = queryParams.get('query') || 'popular';
+  const searchParameter = queryParams.get('search');
+
   const [sectionName, setSectionName] = useState('');
 
+  console.log('Query Parameter:', queryParameter);
+
   const fetchMovies = async (pageNumber) => {
+    if (searchParameter) {
+      return;
+    }
     try {
       let URL1 = '';
       let URL2 = '';
 
-      if (queryParameter === 'popular') {
-        URL1 = `https://api.themoviedb.org/3/movie/popular?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }&page=${pageNumber}`;
+      switch (queryParameter) {
+        case 'popular':
+          URL1 = `https://api.themoviedb.org/3/movie/popular?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }&page=${pageNumber}`;
 
-        URL2 = `https://api.themoviedb.org/3/movie/popular?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }&page=${pageNumber + 1}`;
+          URL2 = `https://api.themoviedb.org/3/movie/popular?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }&page=${pageNumber + 1}`;
 
-        setSectionName('Popular Shows');
-      }
+          setSectionName('Popular Shows');
+          break;
 
-      if (queryParameter === 'trending') {
-        URL1 = `https://api.themoviedb.org/3/trending/movie/week?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }&page=${pageNumber}`;
+        case 'trending':
+          URL1 = `https://api.themoviedb.org/3/trending/movie/week?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }&page=${pageNumber}`;
 
-        URL2 = `https://api.themoviedb.org/3/trending/movie/week?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }&page=${pageNumber + 1}`;
+          URL2 = `https://api.themoviedb.org/3/trending/movie/week?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }&page=${pageNumber + 1}`;
 
-        setSectionName('Trending Shows');
-      }
+          setSectionName('Trending Shows');
+          break;
 
-      if (queryParameter === 'toprated') {
-        URL1 = `https://api.themoviedb.org/3/movie/top_rated?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }&page=${pageNumber}`;
+        default:
+          URL1 = `https://api.themoviedb.org/3/movie/top_rated?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }&page=${pageNumber}`;
 
-        URL2 = `https://api.themoviedb.org/3/movie/top_rated?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }&page=${pageNumber + 1}`;
+          URL2 = `https://api.themoviedb.org/3/movie/top_rated?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }&page=${pageNumber + 1}`;
 
-        setSectionName('Top Rated');
+          setSectionName('Top Rated');
+          break;
       }
 
       const [res1, res2] = await Promise.all([fetch(URL1), fetch(URL2)]);
@@ -78,6 +87,51 @@ const Movies = () => {
       return null;
     }
   };
+
+  useEffect(() => {
+    const searchMovies = async (pageNumber = 0, searchParameter) => {
+      if (!searchParameter) {
+        return;
+      }
+      console.log(
+        '------------searchParameter----SearchMovies--------',
+        searchParameter
+      );
+
+      try {
+        let URL1 = '';
+        let URL2 = '';
+
+        URL1 = `https://api.themoviedb.org/3/search/collection?query=${searchParameter}&api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }&page=${pageNumber}`;
+
+        URL2 = `https://api.themoviedb.org/3/search/collection?query=${searchParameter}&api_key=${
+          import.meta.env.VITE_TMDB_API_KEY
+        }&page=${pageNumber + 1}`;
+
+        const [res1, res2] = await Promise.all([fetch(URL1), fetch(URL2)]);
+
+        if (!res1.ok || !res2.ok) {
+          throw new Error('Failed to fetch movies');
+        }
+
+        const data1 = await res1.json();
+        const data2 = await res2.json();
+
+        const searchResult = {
+          page: pageNumber,
+          allMovies: [...data1.results, ...data2.results],
+        };
+
+        setMovies(searchResult.allMovies);
+      } catch (error) {
+        setError(error.message);
+        return null;
+      }
+    };
+    searchMovies(currentPage, searchParameter);
+  }, [currentPage, searchParameter]);
 
   useEffect(() => {
     const loadInitialMovies = async () => {

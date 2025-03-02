@@ -2,8 +2,18 @@ import styles from './Navbar.module.css';
 import { IoSearchSharp } from 'react-icons/io5';
 import NavDropdownItem from './NavDropdownItem';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
+  const [inputString, setInputString] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    inputString !== '' && navigate(`/movies?search=${inputString}`);
+  }, [inputString]);
+
   return (
     <nav className={styles.navbar} id="top-anchor">
       <div className={styles.navbarLogo}>
@@ -45,6 +55,8 @@ function Navbar() {
           type="text"
           className={styles.navbarSearch}
           placeholder="Search for movies or TV shows"
+          value={inputString}
+          onChange={(e) => setInputString(e.target.value)}
         />
       </div>
       <button className={styles.navbarSigninBtn}>Sign In</button>
