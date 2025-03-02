@@ -97,7 +97,7 @@ const TrendingShows = ({ url, sectionName }) => {
           to={`${
             currentSelection === 'Movies'
               ? `/movies?query=${queryParameter}`
-              : '/shows'
+              : `/shows?query=${queryParameter}`
           }`}
         >
           <Tag

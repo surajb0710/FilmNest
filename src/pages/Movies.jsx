@@ -1,8 +1,5 @@
-import LatestMovies from '../components/Home/LatestMovie';
 import MovieCard from '../components/Cards/MovieCard';
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 import { useLocation } from 'react-router-dom';
 
@@ -18,10 +15,7 @@ const Movies = () => {
   const queryParams = new URLSearchParams(location.search);
   const queryParameter = queryParams.get('query') || 'popular';
   const searchParameter = queryParams.get('search');
-
   const [sectionName, setSectionName] = useState('');
-
-  console.log('Query Parameter:', queryParameter);
 
   const fetchMovies = async (pageNumber) => {
     if (searchParameter) {
@@ -93,10 +87,6 @@ const Movies = () => {
       if (!searchParameter) {
         return;
       }
-      console.log(
-        '------------searchParameter----SearchMovies--------',
-        searchParameter
-      );
 
       try {
         let URL1 = '';

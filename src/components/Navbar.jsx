@@ -34,7 +34,7 @@ function Navbar() {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/tvshows" className={styles.navbarLink}>
+          <Link to="/shows" className={styles.navbarLink}>
             TV Shows
           </Link>
         </li>
@@ -59,7 +59,7 @@ function Navbar() {
           onChange={(e) => setInputString(e.target.value)}
         />
       </div>
-      <button className={styles.navbarSigninBtn}>Sign In</button>
+      {/* <button className={styles.navbarSigninBtn}>Sign In</button> */}
     </nav>
   );
 }

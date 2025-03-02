@@ -5,7 +5,6 @@ import TrendingListItem from '../Cards/TrendingListItem';
 
 const TrendingList = () => {
   const [currentSelection, setCurrentSelection] = useState('Movies');
-
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
