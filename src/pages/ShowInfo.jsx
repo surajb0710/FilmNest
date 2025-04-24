@@ -6,9 +6,18 @@ import useMovieInfo from '../hooks/useMovieInfo';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import useCountries from '../utils/useCountries';
+import getCredits from '../utils/getCredits';
+import getReviews from '../utils/getReviews';
+import PeopleProfileCard from '../components/Cards/PeopleProfileCard';
+import ReviewCard from '../components/Cards/ReviewCard';
+import getImages from '../utils/getImages';
+import ImageCarousal from '../components/ImageCarousal';
+import ReviewCarousal from '../components/ReviewCarousal';
 
 const ShowInfo = () => {
-  const show = useSelector((state) => state.show.showObject);
+  const show =
+    useSelector((state) => state.show.showObject) ||
+    JSON.parse(localStorage.getItem('show'));
 
   const [currentShow, setCurrentShow] = useState({});
   const [loading, setLoading] = useState(true);
@@ -64,9 +73,21 @@ const ShowInfo = () => {
   }, [show.showType, show.showId]);
 
   const countryNames = useCountries(currentShow.origin_country);
+  const credits = getCredits(show.showId, show.showType);
+  const reviews = getReviews(show.showId, show.showType);
+  const images = getImages(show.showId, show.showType);
 
-  console.log('-------countryNames------', countryNames);
-  console.log('-------currentShow------', currentShow);
+  const directors = credits.crew
+    ?.filter((item) => item.job === 'Director')
+    .map((item) => item.name);
+
+  // console.log('-------countryNames------', countryNames);
+  // console.log('-------credits------', credits);
+
+  // console.log('-------reviews------', reviews);
+  console.log('-------images------', images);
+
+  console.log('Current Show', currentShow);
 
   return (
     <div className="px-10 flex flex-col gap-10">
@@ -130,7 +151,33 @@ const ShowInfo = () => {
           </div>
         </div>
       </div>
-      <div className="flex gap-4"></div>
+      <div className="">
+        <h2 className="text-4xl font-medium mb-10">Top Cast</h2>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-w-screen gap-x-10 gap-y-5">
+          {credits.cast?.slice(0, 10).map((cast) => (
+            <PeopleProfileCard cast={cast} key={cast.cast_id} />
+          ))}
+        </div>
+      </div>
+      <div className="">
+        <h2 className="text-4xl font-medium mb-10">Directors</h2>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-w-screen gap-x-10 gap-y-5">
+          {credits.crew?.map(
+            (crew) =>
+              crew.job === 'Director' && (
+                <PeopleProfileCard cast={crew} key={crew.id} />
+              )
+          )}
+        </div>
+      </div>
+      <div className="">
+        <h2 className="text-4xl font-medium mb-10">User Reviews</h2>
+        {reviews.results && <ReviewCarousal reviews={reviews.results} />}
+      </div>
+      <div className="">
+        <h2 className="text-4xl font-medium mb-10">Backdrop Images</h2>
+        {images.backdrops && <ImageCarousal images={images.backdrops} />}
+      </div>
     </div>
   );
 };

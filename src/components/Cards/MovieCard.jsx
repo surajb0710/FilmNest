@@ -44,12 +44,9 @@ const MovieCard = ({ movie, showType }) => {
   }, [showType, movie?.id]);
 
   const handleClick = () => {
-    dispatch(
-      setShow({
-        showId: movie?.id,
-        showType: showType,
-      })
-    );
+    const showObject = { showId: movie?.id, showType: showType };
+    dispatch(setShow(showObject));
+    localStorage.setItem('show', JSON.stringify(showObject));
     navigate('/showInfo');
   };
 
