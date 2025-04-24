@@ -31,6 +31,8 @@ const Hero = ({ movies }) => {
 const HeroComponent = ({ movie }) => {
   const [genreList, setGenreList] = useState([]);
 
+  const fullPosterUrl = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
+
   const allGenreList = useGenres('Movies');
 
   useEffect(() => {
@@ -60,8 +62,8 @@ const HeroComponent = ({ movie }) => {
 
   return (
     <div className="w-full h-[620px] !flex items-center relative">
-      <div className="px-8 z-10">
-        <div className="text-[50px] font-extrabold mb-4">
+      <div className="px-8 z-10 text-bg">
+        <div className="text-[50px] font-extrabold mb-4 ">
           {movie.title || movie.name}
         </div>
         <div className="flex gap-5 items-center">
@@ -79,7 +81,7 @@ const HeroComponent = ({ movie }) => {
         </div>
       </div>
       <img
-        src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+        src={fullPosterUrl}
         alt=""
         className="w-full h-auto object-cover absolute"
       />

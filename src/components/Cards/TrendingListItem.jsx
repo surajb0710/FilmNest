@@ -71,6 +71,8 @@ const TrendingListItem = ({ movie, showType, index }) => {
     fetchMovieInfo();
   }, [showType, movie?.id]);
 
+  // console.log('-------Trending List Item-------', movie);
+
   return (
     <div className="relative">
       <div className="absolute rounded-full bg-gray-800 w-[30px] h-[30px] flex justify-center items-center border border-orange-500 text-orange-500 top-1/2 translate-[-50%] left-[15px] font-bold">

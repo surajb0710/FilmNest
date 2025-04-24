@@ -17,8 +17,6 @@ const useGenres = (showType) => {
 
         const data = await response.json();
 
-        // console.log('-------data----------', data);
-
         setGenreList(data.genres || []);
       } catch (error) {
         console.error('Error fetching genres:', error);
@@ -27,8 +25,6 @@ const useGenres = (showType) => {
 
     fetchGenres(showType);
   }, [showType]);
-
-  // console.log('-------data--genreList--------', genreList);
 
   return genreList;
 };
