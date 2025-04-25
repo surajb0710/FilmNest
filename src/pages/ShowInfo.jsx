@@ -1,8 +1,8 @@
 import StarIcon from '@mui/icons-material/Star';
 import ImdbTag from '../components/Common/ImdbTag';
 import { useSelector } from 'react-redux';
-import useTvShowInfo from '../hooks/useTvShowInfo';
-import useMovieInfo from '../hooks/useMovieInfo';
+// import useTvShowInfo from '../utils/getTvShowInfo';
+// import useMovieInfo from '../utils/getMovieInfo';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import useCountries from '../utils/useCountries';
@@ -13,11 +13,15 @@ import getImages from '../utils/getImages';
 import ImageCarousal from '../components/ImageCarousal';
 import ReviewCarousal from '../components/ReviewCarousal';
 import { addCommas } from '../utils/utils';
+import getSimilarShows from '../utils/getSimilarShows';
+import SimilarShowsListItem from '../components/Cards/SimilarShowsListItem';
 
 const ShowInfo = () => {
-  const show =
-    useSelector((state) => state.show.showObject) ||
-    JSON.parse(localStorage.getItem('show'));
+  const showObj = useSelector((state) => state.show.showObject);
+
+  const show = showObj.showId
+    ? showObj
+    : JSON.parse(localStorage.getItem('show'));
 
   const [currentShow, setCurrentShow] = useState({});
   const [loading, setLoading] = useState(true);
@@ -76,6 +80,7 @@ const ShowInfo = () => {
   const credits = getCredits(show.showId, show.showType);
   const reviews = getReviews(show.showId, show.showType);
   const images = getImages(show.showId, show.showType);
+  const similarShows = getSimilarShows(show.showId, show.showType);
 
   const directors = credits.crew
     ?.filter((item) => item.job === 'Director')
@@ -88,122 +93,142 @@ const ShowInfo = () => {
     (production_company) => production_company.name
   );
 
-  console.log('-------countryNames------', countryNames);
-  console.log('-------credits------', credits);
+  // console.log('-------countryNames------', countryNames);
+  // console.log('-------credits------', credits);
 
-  console.log('-------reviews------', reviews);
-  console.log('-------images------', images);
+  // console.log('-------reviews------', reviews);
+  console.log('-------currentShow------', currentShow);
+  console.log('-------similarShows------', similarShows);
 
-  console.log('Current Show', currentShow);
-
-  console.log('genres');
+  console.log('Show Object', show);
 
   return (
     <div className="px-10 flex flex-col gap-10">
-      {currentShow && show.showType === 'Movies' ? (
-        <div className="flex gap-6">
-          <img
-            src={`https://image.tmdb.org/t/p/original${currentShow.poster_path}`}
-            alt=""
-            className="h-[400px] w-[270px]"
-          />
-          <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-1">
-              <h2 className="text-[25px]">{currentShow.title}</h2>
-              <div className="flex gap-5 items-center">
-                <p>{currentShow.release_date}</p>
-                <div className="flex gap-2 items-center">
-                  <StarIcon sx={{ color: 'yellow' }} />
-                  <p>{currentShow.vote_average}</p>
-                  <ImdbTag />
+      <div className="flex gap-10">
+        <div className="flex-2/3">
+          {currentShow && show.showType === 'Movies' ? (
+            <div className="flex gap-6">
+              <img
+                src={`https://image.tmdb.org/t/p/original${currentShow.poster_path}`}
+                alt=""
+                className="h-[400px] w-[270px]"
+              />
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-1">
+                  <h2 className="text-[25px]">{currentShow.title}</h2>
+                  <div className="flex gap-5 items-center">
+                    <p>{currentShow.release_date}</p>
+                    <div className="flex gap-2 items-center">
+                      <StarIcon sx={{ color: 'yellow' }} />
+                      <p>{currentShow.vote_average}</p>
+                      <ImdbTag />
+                    </div>
+                    <p>{currentShow.runtime} mins</p>
+                    <ul className="flex gap-2">
+                      {genres &&
+                        genres.map((genre) => (
+                          <li
+                            className="px-2 py-1 border-2 border-white rounded-md w-max"
+                            key={genre}
+                          >
+                            {genre}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                  <p>{currentShow.overview}</p>
                 </div>
-                <p>{currentShow.runtime} mins</p>
-                <ul className="flex gap-2">
-                  {genres &&
-                    genres.map((genre) => (
-                      <li
-                        className="px-2 py-1 border-2 border-white rounded-md w-max"
-                        key={genre}
-                      >
-                        {genre}
-                      </li>
-                    ))}
-                </ul>
-              </div>
-              <p>{currentShow.overview}</p>
-            </div>
-            <div className="flex flex-col gap-1">
-              <p>
-                Type: <span>Movie</span>
-              </p>
-              <p>
-                Countries:{' '}
-                <span>{countryNames && addCommas(countryNames)}</span>
-              </p>
-              <p>
-                Production:{' '}
-                <span>
-                  {productionCompanies && addCommas(productionCompanies)}
-                </span>
-              </p>
-              <p>
-                Tagline: <span>{currentShow.tagline}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="flex gap-6">
-          <img
-            src={`https://image.tmdb.org/t/p/original${currentShow.poster_path}`}
-            alt=""
-            className="h-[400px] w-[270px]"
-          />
-          <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-1">
-              <h2 className="text-[25px]">{currentShow.name}</h2>
-              <div className="flex gap-5 items-center">
-                <p>{currentShow.last_air_date}</p>
-                <div className="flex gap-2 items-center">
-                  <StarIcon sx={{ color: 'yellow' }} />
-                  <p>{currentShow.vote_average}</p>
-                  <ImdbTag />
+                <div className="flex flex-col gap-1">
+                  <p>
+                    Type: <span>Movie</span>
+                  </p>
+                  <p>
+                    Countries:{' '}
+                    <span>{countryNames && addCommas(countryNames)}</span>
+                  </p>
+                  <p>
+                    Production:{' '}
+                    <span>
+                      {productionCompanies && addCommas(productionCompanies)}
+                    </span>
+                  </p>
+                  <p>
+                    Tagline: <span>{currentShow.tagline}</span>
+                  </p>
                 </div>
-                <ul className="flex gap-2">
-                  {genres &&
-                    genres.map((genre) => (
-                      <li
-                        className="px-2 py-1 border-2 border-white rounded-md w-max"
-                        key={genre}
-                      >
-                        {genre}
-                      </li>
-                    ))}
-                </ul>
               </div>
-              <p>{currentShow.overview}</p>
             </div>
-            <div className="flex flex-col gap-1">
-              <p>
-                Type: <span>TV Show</span>
-              </p>
-              <p>
-                Country: <span>{countryNames && addCommas(countryNames)}</span>
-              </p>
-              <p>
-                Production:
-                <span>
-                  {productionCompanies && addCommas(productionCompanies)}
-                </span>
-              </p>
-              <p>
-                Tagline:{' '}
-                <span>{currentShow.tagline ? currentShow.tagline : 'NA'}</span>
-              </p>
+          ) : (
+            <div className="flex gap-6">
+              <img
+                src={`https://image.tmdb.org/t/p/original${currentShow.poster_path}`}
+                alt=""
+                className="h-[400px] w-[270px]"
+              />
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-1">
+                  <h2 className="text-[25px]">{currentShow.name}</h2>
+                  <div className="flex gap-5 items-center">
+                    <p>{currentShow.last_air_date}</p>
+                    <div className="flex gap-2 items-center">
+                      <StarIcon sx={{ color: 'yellow' }} />
+                      <p>{currentShow.vote_average}</p>
+                      <ImdbTag />
+                    </div>
+                    <ul className="flex gap-2">
+                      {genres &&
+                        genres.map((genre) => (
+                          <li
+                            className="px-2 py-1 border-2 border-white rounded-md w-max"
+                            key={genre}
+                          >
+                            {genre}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                  <p>{currentShow.overview}</p>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p>
+                    Type: <span>TV Show</span>
+                  </p>
+                  <p>
+                    Country:{' '}
+                    <span>{countryNames && addCommas(countryNames)}</span>
+                  </p>
+                  <p>
+                    Production:
+                    <span>
+                      {productionCompanies && addCommas(productionCompanies)}
+                    </span>
+                  </p>
+                  <p>
+                    Tagline:{' '}
+                    <span>
+                      {currentShow.tagline ? currentShow.tagline : 'NA'}
+                    </span>
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
+        <div className="flex-1/3 space-y-5">
+          <h2 className="text-lg">Similar {show.showType}</h2>
+          {similarShows.results &&
+            similarShows.results
+              .slice(0, 1)
+              .map((showObject, index) => (
+                <SimilarShowsListItem
+                  show={showObject}
+                  index={index}
+                  showType={show.showType}
+                  key={index}
+                />
+              ))}
+        </div>
+      </div>
       <div className="">
         <h2 className="text-4xl font-medium mb-10">Top Cast</h2>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-w-screen gap-x-10 gap-y-5">

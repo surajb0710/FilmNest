@@ -14,4 +14,14 @@ function addCommas(array) {
   );
 }
 
-export { formatDate, addCommas };
+function uniqueArrayItems(arr, key = 'id') {
+  const seen = new Set();
+  return arr.filter((item) => {
+    const identifier = item[key];
+    if (seen.has(identifier)) return false;
+    seen.add(identifier);
+    return true;
+  });
+}
+
+export { formatDate, addCommas, uniqueArrayItems };

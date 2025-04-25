@@ -2,6 +2,7 @@ import MovieCard from '../components/Cards/MovieCard';
 import { useState, useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
 import { useLocation } from 'react-router-dom';
+import { uniqueArrayItems } from '../utils/utils';
 
 const TVShows = () => {
   const [movies, setMovies] = useState([]);
@@ -133,8 +134,6 @@ const TVShows = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  console.log('------movieList-----', movieList);
-
   return (
     <div className="">
       <h1 className="text-4xl font-extrabold text-center my-10">
@@ -142,8 +141,8 @@ const TVShows = () => {
       </h1>
       <div className="px-10">
         <div className="!grid grid-cols-8 gap-y-8" key={currentPage}>
-          {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} showType={'Movies'} />
+          {uniqueArrayItems(movies).map((movie) => (
+            <MovieCard key={movie.id} movie={movie} showType={'Shows'} />
           ))}
         </div>
       </div>
@@ -159,8 +158,8 @@ const TVShows = () => {
             Prev
           </button>
         </HashLink>
-        {movieList.map((page) => (
-          <HashLink smooth to="/movies#top-anchor">
+        {movieList.map((page, index) => (
+          <HashLink smooth to="/movies#top-anchor" key={index}>
             <button
               key={page.page}
               onClick={() => handlePageClick(page.page)}

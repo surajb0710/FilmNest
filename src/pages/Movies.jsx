@@ -202,10 +202,9 @@ const Movies = () => {
             Prev
           </button>
         </HashLink>
-        {movieList.map((page) => (
-          <HashLink smooth to="/movies#top-anchor">
+        {movieList.map((page, index) => (
+          <HashLink smooth to="/movies#top-anchor" key={index}>
             <button
-              key={page.page}
               onClick={() => handlePageClick(page.page)}
               className={`h-6 w-6 flex items-center justify-center text-base ${
                 currentPage === page.page ? 'bg-blue-500' : 'bg-green-500'
