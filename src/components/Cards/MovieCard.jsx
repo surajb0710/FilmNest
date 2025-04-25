@@ -53,7 +53,7 @@ const MovieCard = ({ movie, showType }) => {
   return (
     <div className="relative">
       <div
-        className="max-w-[170px]"
+        className="max-w-[170px] cursor-pointer"
         onMouseEnter={() => setShowSummaryCard(true)}
         onMouseLeave={() => setShowSummaryCard(false)}
         onClick={handleClick}

@@ -37,11 +37,13 @@ const ReviewCarousal = ({ reviews }) => {
       },
     ],
   };
+
+  console.log('-------reviews-------', reviews);
   return (
     <div className="slider-container h-max">
       <Slider {...settings}>
         {reviews.map((review) => (
-          <div className="px-5">
+          <div className="px-5" key={review.id}>
             <div className="space-y-2 border border-white p-10 rounded-xl h-full max-h-[210px]">
               <p>
                 <span className="font-bold">Author Name :</span> {review.author}

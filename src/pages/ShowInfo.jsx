@@ -9,7 +9,6 @@ import useCountries from '../utils/useCountries';
 import getCredits from '../utils/getCredits';
 import getReviews from '../utils/getReviews';
 import PeopleProfileCard from '../components/Cards/PeopleProfileCard';
-import ReviewCard from '../components/Cards/ReviewCard';
 import getImages from '../utils/getImages';
 import ImageCarousal from '../components/ImageCarousal';
 import ReviewCarousal from '../components/ReviewCarousal';
