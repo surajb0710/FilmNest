@@ -11,7 +11,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    inputString !== '' && navigate(`/movies?search=${inputString}`);
+    inputString !== '' && navigate(`/search?search=${inputString}`);
   }, [inputString]);
 
   return (

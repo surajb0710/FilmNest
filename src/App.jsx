@@ -2,6 +2,7 @@ import Home from './pages/Home';
 import TVShows from './pages/TVShows';
 import Movies from './pages/Movies';
 import ShowInfo from './pages/ShowInfo';
+import SearchResults from './pages/SearchResults';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
@@ -15,6 +16,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/search" element={<SearchResults />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/shows" element={<TVShows />} />
         <Route path="/showInfo" element={<ShowInfo />} />

@@ -9,7 +9,7 @@ const SummaryCard = ({ movie, showType, numberOfSeasons }) => {
       </div>
       <div className="flex gap-2 items-center mb-4">
         {showType === 'movie' ? (
-          <p>{movie?.release_date.slice(0, 4)}</p>
+          <p>{movie?.release_date?.slice(0, 4)}</p>
         ) : (
           <p className="text-sm">SS{numberOfSeasons}</p>
         )}

@@ -4,6 +4,7 @@ import SummaryCard from './SummaryCard';
 import { useDispatch } from 'react-redux';
 import { setShow } from '../../features/showSlice';
 import { Navigate, useNavigate } from 'react-router-dom';
+import imageUnavailable from '../../assets/image_unavailable.png';
 
 const MovieCard = ({ movie, showType }) => {
   const fullPosterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
@@ -14,6 +15,8 @@ const MovieCard = ({ movie, showType }) => {
   const [showSummaryCard, setShowSummaryCard] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  console.log('------MovieCard----------', showType);
 
   useEffect(() => {
     if (showType !== 'Shows' || !movie?.id) return;
@@ -59,17 +62,19 @@ const MovieCard = ({ movie, showType }) => {
         onClick={handleClick}
       >
         <img
-          src={fullPosterUrl}
+          src={
+            !fullPosterUrl.includes('null') ? fullPosterUrl : imageUnavailable
+          }
           alt=""
           className="h-[260px] w-[170px] rounded-lg mb-4"
         />
         <h3 className="text-base font-semibold mb-2 text-wrap">
           {movie.title || movie.name}
         </h3>
-        <div className="flex gap-4">
+        <div className="flex gap-4 justify-between">
           <p className="text-sm">{showType === 'Movies' ? 'Movie' : 'TV'}</p>
           {showType === 'Movies' ? (
-            <p className="text-sm">{movie.release_date}</p>
+            <p className="text-sm">{movie.release_date?.slice(0, 4)}</p>
           ) : (
             <p className="text-sm">SS{numberOfSeasons}</p>
           )}
