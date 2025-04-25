@@ -8,4 +8,10 @@ function formatDate(isoString) {
   return `${day} ${month} ${year}`;
 }
 
-export { formatDate };
+function addCommas(array) {
+  return array.map((item, index) =>
+    index !== array.length - 1 ? `${item}, ` : item
+  );
+}
+
+export { formatDate, addCommas };
