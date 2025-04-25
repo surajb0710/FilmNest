@@ -1,8 +1,6 @@
 import StarIcon from '@mui/icons-material/Star';
 import ImdbTag from '../components/Common/ImdbTag';
 import { useSelector } from 'react-redux';
-// import useTvShowInfo from '../utils/getTvShowInfo';
-// import useMovieInfo from '../utils/getMovieInfo';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import useCountries from '../utils/useCountries';
@@ -15,6 +13,7 @@ import ReviewCarousal from '../components/ReviewCarousal';
 import { addCommas } from '../utils/utils';
 import getSimilarShows from '../utils/getSimilarShows';
 import SimilarShowsListItem from '../components/Cards/SimilarShowsListItem';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ShowInfo = () => {
   const showObj = useSelector((state) => state.show.showObject);
@@ -86,23 +85,40 @@ const ShowInfo = () => {
     ?.filter((item) => item.job === 'Director')
     .map((item) => item.name);
 
-  const casts = credits.cast?.map((item) => item.name);
-
   const genres = currentShow.genres?.map((genre) => genre.name);
   const productionCompanies = currentShow.production_companies?.map(
     (production_company) => production_company.name
   );
 
-  // console.log('-------countryNames------', countryNames);
-  // console.log('-------credits------', credits);
+  console.log('currentShow.title', currentShow.title);
+  console.log('credits.cast', credits.cast);
+  console.log('directors', directors);
+  console.log('reviews', reviews);
 
-  // console.log('-------reviews------', reviews);
-  console.log('-------currentShow------', currentShow);
-  console.log('-------similarShows------', similarShows);
+  //!currentShow.title && !credits.cast && !directors && !reviews ?
 
-  console.log('Show Object', show);
+  useEffect(() => {
+    // callback function to call when event triggers
+    const onPageLoad = () => {
+      console.log('page loaded');
+      setLoading(false);
+    };
 
-  return (
+    // Check if the page has already loaded
+    if (document.readyState === 'complete') {
+      onPageLoad();
+    } else {
+      window.addEventListener('load', onPageLoad, false);
+      // Remove the event listener when component unmounts
+      return () => window.removeEventListener('load', onPageLoad);
+    }
+  }, []);
+
+  return !currentShow.title ? (
+    <div className="min-h-screen w-full flex items-center justify-center">
+      <CircularProgress />
+    </div>
+  ) : (
     <div className="px-10 flex flex-col gap-10">
       <div className="flex gap-10">
         <div className="flex-2/3">
@@ -229,14 +245,16 @@ const ShowInfo = () => {
               ))}
         </div>
       </div>
-      <div className="">
-        <h2 className="text-4xl font-medium mb-10">Top Cast</h2>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-w-screen gap-x-10 gap-y-5">
-          {credits.cast?.slice(0, 10).map((cast) => (
-            <PeopleProfileCard cast={cast} key={cast.id} />
-          ))}
+      {credits.cast?.length > 0 && (
+        <div className="">
+          <h2 className="text-4xl font-medium mb-10">Top Cast</h2>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-w-screen gap-x-10 gap-y-5">
+            {credits.cast?.slice(0, 10).map((cast) => (
+              <PeopleProfileCard cast={cast} key={cast.id} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       {directors?.length > 0 && (
         <div className="">
           <h2 className="text-4xl font-medium mb-10">Directors</h2>

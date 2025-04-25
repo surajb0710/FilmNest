@@ -38,8 +38,31 @@ const ReviewCarousal = ({ reviews }) => {
     ],
   };
 
-  console.log('-------reviews-------', reviews);
-  return (
+  return reviews.length < 3 ? (
+    <div className="flex justify-start items-stretch gap-4">
+      {reviews.map((review) => (
+        <div className="flex-1" key={review.id}>
+          <div className="h-full flex flex-col justify-between space-y-2 border border-white p-10 rounded-xl">
+            <p>
+              <span className="font-bold">Author Name :</span> {review.author}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Rating : </span>
+              {review.author_details.rating}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold">Review : </span>
+              {review.content.slice(0, 100)}
+            </p>
+            <p className="text-sm mt-auto">
+              <span className="font-bold">Updated on : </span>
+              {formatDate(review.updated_at)}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
     <div className="slider-container h-max">
       <Slider {...settings}>
         {reviews.map((review) => (
