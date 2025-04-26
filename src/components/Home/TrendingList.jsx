@@ -20,7 +20,7 @@ const TrendingList = ({
   };
 
   return (
-    <div className="w-[30%] h-full">
+    <div className="w-[30%] h-full max-md:hidden">
       <div className="flex gap-4 items-center py-2">
         <TrendingUpIcon fontSize="large" />
         <h2 className="mr-auto text-[25px] font-bold">TRENDING</h2>

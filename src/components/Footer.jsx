@@ -1,15 +1,14 @@
-import styles from './Footer.module.css';
 import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <nav className={styles.footerNavbar}>
-      <div className={styles.footerLogo}>FilmNest</div>
-      <div>
-        <Link to="/terms" className={styles.footerLink}>
+    <nav className="p-[5px_60px] bg-black h-[60px] flex items-center gap-[100px]">
+      <div className="text-[30px] font-medium text-white">FilmNest</div>
+      <div className="flex gap-4">
+        <Link to="/terms" className="text-white no-underline px-2 py-1">
           Terms of Service
         </Link>
-        <Link to="/terms" className={styles.footerLink}>
+        <Link to="/terms" className="text-white no-underline px-2 py-1">
           Privacy Policy
         </Link>
       </div>

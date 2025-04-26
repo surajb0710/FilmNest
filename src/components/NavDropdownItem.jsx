@@ -1,18 +1,23 @@
-import style from './NavDropdownItem.module.css';
 import data from '../../data.json';
 
 const genres = data.genres;
 
 const NavDropdownItem = () => {
   return (
-    <li className={style.navItem}>
-      <a href="/" className={style.navbarLink}>
+    <li className="relative transition-colors duration-500 px-[15px] group">
+      <a
+        href="/"
+        className="no-underline flex items-center justify-start text-white"
+      >
         Genre
       </a>
-      <ul className={style.dropdownMenu}>
+      <ul className="absolute left-0 mt-4 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-500 bg-black p-[15px] shadow-md grid grid-cols-3 gap-2 w-[400px] z-10 list-none">
         {genres.map((genre) => (
-          <li className={style.dropdownItem} key={genre.id}>
-            <a href="/" className={style.dropDownItemLink}>
+          <li className="w-full m-0 py-1 border-b border-black" key={genre.id}>
+            <a
+              href="/"
+              className="flex justify-between gap-10 no-underline text-white"
+            >
               {genre.name}
             </a>
           </li>

@@ -1,10 +1,6 @@
-import styles from './Navbar.module.css';
 import { IoSearchSharp } from 'react-icons/io5';
-import NavDropdownItem from './NavDropdownItem';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 function Navbar() {
   const [inputString, setInputString] = useState('');
@@ -15,51 +11,37 @@ function Navbar() {
   }, [inputString]);
 
   return (
-    <nav className={styles.navbar} id="top-anchor">
-      <div className={styles.navbarLogo}>
-        <Link to="/" className={styles.navbarLink}>
+    <nav
+      className="p-[5px_60px] bg-black border border-white h-[60px] flex items-center gap-[25px]"
+      id="top-anchor"
+    >
+      <div className="text-[30px] font-medium">
+        <Link to="/" className="text-white no-underline">
           FilmNest
         </Link>
       </div>
-      <ul className={styles.linksNavbar}>
-        {/* <NavDropdownItem className={styles.dropdownItem} /> */}
-        {/* <li className="nav-item">
-          <a href="/" className={styles.navbarLink}>
-            Popular
-          </a>
-        </li> */}
-        <li className="nav-item">
-          <Link to="/movies" className={styles.navbarLink}>
+      <ul className="flex items-center list-none">
+        <li className="relative">
+          <Link to="/movies" className="text-white no-underline px-2 py-1">
             Movies
           </Link>
         </li>
-        <li className="nav-item">
-          <Link to="/shows" className={styles.navbarLink}>
+        <li className="relative">
+          <Link to="/shows" className="text-white no-underline px-2 py-1">
             TV Shows
           </Link>
         </li>
-        {/* <li className="nav-item">
-          <a href="/" className={styles.navbarLink}>
-            Top Rated
-          </a>
-        </li>
-        <li className="nav-item">
-          <a href="/" className={styles.navbarLink}>
-            Upcoming
-          </a>
-        </li> */}
       </ul>
-      <div className={styles.navbarSearchContainer}>
-        <IoSearchSharp className={styles.searchIcon} />
+      <div className="flex items-center gap-1 flex-grow bg-black">
+        <IoSearchSharp className="text-white" />
         <input
           type="text"
-          className={styles.navbarSearch}
+          className="flex-grow border-none outline-none bg-black text-white"
           placeholder="Search for movies or TV shows"
           value={inputString}
           onChange={(e) => setInputString(e.target.value)}
         />
       </div>
-      {/* <button className={styles.navbarSigninBtn}>Sign In</button> */}
     </nav>
   );
 }
