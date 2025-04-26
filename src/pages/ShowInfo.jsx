@@ -156,16 +156,16 @@ const ShowInfo = () => {
               </div>
             </div>
           ) : (
-            <div className="flex gap-6">
+            <div className="flex max-lg:flex-col max-lg:items-center gap-6">
               <img
                 src={`https://image.tmdb.org/t/p/original${currentShow.poster_path}`}
                 alt=""
                 className="h-[400px] w-[270px]"
               />
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2 lg:gap-5">
+                <div className="flex flex-col gap-2">
                   <h2 className="text-[25px]">{currentShow.name}</h2>
-                  <div className="flex gap-5 items-center">
+                  <div className="flex flex-wrap max-lg:flex-col gap-1 lg:gap-5 lg:items-center">
                     <p>{currentShow.last_air_date}</p>
                     <div className="flex gap-2 items-center">
                       <StarIcon sx={{ color: 'yellow' }} />
