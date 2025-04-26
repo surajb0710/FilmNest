@@ -90,31 +90,12 @@ const ShowInfo = () => {
     (production_company) => production_company.name
   );
 
-  console.log('currentShow.title', currentShow.title);
+  console.log('currentShow', currentShow);
   console.log('credits.cast', credits.cast);
   console.log('directors', directors);
   console.log('reviews', reviews);
 
-  //!currentShow.title && !credits.cast && !directors && !reviews ?
-
-  useEffect(() => {
-    // callback function to call when event triggers
-    const onPageLoad = () => {
-      console.log('page loaded');
-      setLoading(false);
-    };
-
-    // Check if the page has already loaded
-    if (document.readyState === 'complete') {
-      onPageLoad();
-    } else {
-      window.addEventListener('load', onPageLoad, false);
-      // Remove the event listener when component unmounts
-      return () => window.removeEventListener('load', onPageLoad);
-    }
-  }, []);
-
-  return !currentShow.title ? (
+  return !currentShow.id ? (
     <div className="min-h-screen w-full flex items-center justify-center">
       <CircularProgress />
     </div>

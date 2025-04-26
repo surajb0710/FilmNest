@@ -150,7 +150,7 @@ const TVShows = () => {
         <HashLink smooth to="/movies#top-anchor">
           <button
             onClick={handlePrev}
-            className={`cursor-pointer bg-green-500 px-2 ${
+            className={`cursor-pointer border border-white rounded-sm px-2 ${
               firstPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             disabled={firstPage === 1}
@@ -163,8 +163,10 @@ const TVShows = () => {
             <button
               key={page.page}
               onClick={() => handlePageClick(page.page)}
-              className={`h-6 w-6 flex items-center justify-center text-base ${
-                currentPage === page.page ? 'bg-blue-500' : 'bg-green-500'
+              className={`h-6 w-6 flex items-center justify-center rounded-sm text-base ${
+                currentPage === page.page
+                  ? 'bg-white !text-black font-medium'
+                  : 'border border-white'
               } text-white cursor-pointer`}
             >
               {page.page}
@@ -174,7 +176,7 @@ const TVShows = () => {
         <HashLink smooth to="/movies#top-anchor">
           <button
             onClick={handleNext}
-            className="cursor-pointer bg-green-500 px-2"
+            className="cursor-pointer border border-white rounded-sm px-2"
           >
             Next
           </button>

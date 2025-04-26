@@ -16,8 +16,6 @@ const MovieCard = ({ movie, showType }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log('------MovieCard----------', showType);
-
   useEffect(() => {
     if (showType !== 'Shows' || !movie?.id) return;
 
@@ -51,6 +49,7 @@ const MovieCard = ({ movie, showType }) => {
     dispatch(setShow(showObject));
     localStorage.setItem('show', JSON.stringify(showObject));
     navigate('/showInfo');
+    window.scrollTo(0, 0);
   };
 
   return (
