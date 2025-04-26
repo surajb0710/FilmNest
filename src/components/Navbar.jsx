@@ -12,7 +12,7 @@ function Navbar() {
 
   return (
     <nav
-      className="p-[5px_60px] bg-black border border-white h-[60px] flex items-center gap-[25px]"
+      className="py-1 px-5 md:px-15 bg-black border border-white h-[60px] flex items-center justify-between gap-[25px] flex-wrap"
       id="top-anchor"
     >
       <div className="text-[30px] font-medium">
