@@ -17,7 +17,7 @@ const Hero = ({ movies }) => {
   };
 
   return (
-    <div className="w-[70%] h-full">
+    <div className="w-full lg:w-[70%] lg:h-full">
       <Slider {...settings} className="slider">
         {movies.length > 0 &&
           movies
@@ -61,19 +61,21 @@ const HeroComponent = ({ movie }) => {
   }, [movie.genre_ids, allGenreList]);
 
   return (
-    <div className="w-full h-[620px] !flex items-center relative">
-      <div className="px-8 z-10 text-bg">
-        <div className="text-[50px] font-extrabold mb-4 ">
+    <div className="w-full h-[400px] lg:h-[620px] !flex items-center relative">
+      <div className="px-4 lg:px-8 z-10 text-bg pt-3">
+        <div className="text-[20px] lg:text-[50px] font-extrabold mb-4">
           {movie.title || movie.name}
         </div>
-        <div className="flex gap-5 items-center">
-          <p>{movie.release_date}</p>
-          <div className="flex gap-2 items-center">
-            <StarIcon sx={{ color: 'yellow' }} />
-            <p>{movie.vote_average}</p>
-            <ImdbTag />
+        <div className="flex gap-5 items-center max-lg:flex-col">
+          <div className="flex gap-5">
+            <p>{movie.release_date}</p>
+            <div className="flex gap-2 items-center">
+              <StarIcon sx={{ color: 'yellow' }} />
+              <p>{movie.vote_average}</p>
+              <ImdbTag />
+            </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 max-lg:self-start flex-wrap">
             {genreList.map((genre, index) => (
               <p key={index}>{genre}</p>
             ))}
@@ -83,7 +85,7 @@ const HeroComponent = ({ movie }) => {
       <img
         src={fullPosterUrl}
         alt=""
-        className="w-full h-auto object-cover absolute"
+        className="w-full h-full object-cover absolute"
       />
     </div>
   );

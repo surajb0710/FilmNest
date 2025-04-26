@@ -10,7 +10,7 @@ const Tag = ({
   return name === 'View More' ? (
     <button
       onClick={handleClick}
-      className={`h-[30px] px-4 rounded-[15px] flex items-center text-base cursor-pointer font-medium ${
+      className={`h-[30px] px-2 xl:px-4 rounded-[15px] flex items-center text-base cursor-pointer font-medium ${
         selected
           ? 'bg-orange-500 hover:bg-orange-300 text-black'
           : 'hover:bg-white hover:text-black border border-white'

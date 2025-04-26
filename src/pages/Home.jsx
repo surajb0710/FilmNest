@@ -47,8 +47,8 @@ function Home() {
   };
 
   return (
-    <div className="px-10 flex flex-col gap-16">
-      <div className="flex h-[620px] gap-5">
+    <div className="px-5 lg:px-10 flex flex-col gap-16 max-sm:mt-15 max-lg:mt-5">
+      <div className="flex gap-5">
         <Hero movies={movies} />
         <TrendingList
           movies={movies}

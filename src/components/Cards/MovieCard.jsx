@@ -55,7 +55,7 @@ const MovieCard = ({ movie, showType }) => {
   return (
     <div className="relative">
       <div
-        className="max-w-[170px] cursor-pointer"
+        className="lg:max-w-[170px] cursor-pointer flex flex-col max-lg:items-center"
         onMouseEnter={() => setShowSummaryCard(true)}
         onMouseLeave={() => setShowSummaryCard(false)}
         onClick={handleClick}
@@ -65,12 +65,12 @@ const MovieCard = ({ movie, showType }) => {
             !fullPosterUrl.includes('null') ? fullPosterUrl : imageUnavailable
           }
           alt=""
-          className="h-[260px] w-[170px] rounded-lg mb-4"
+          className="w-[140px] lg:h-[260px] lg:w-[170px] rounded-lg mb-4"
         />
         <h3 className="text-base font-semibold mb-2 text-wrap">
           {movie.title || movie.name}
         </h3>
-        <div className="flex gap-4 justify-between">
+        <div className="flex gap-4 justify-between w-full">
           <p className="text-sm">{showType === 'Movies' ? 'Movie' : 'TV'}</p>
           {showType === 'Movies' ? (
             <p className="text-sm">{movie.release_date?.slice(0, 4)}</p>

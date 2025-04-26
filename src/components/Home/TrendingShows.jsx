@@ -119,7 +119,7 @@ const TrendingShows = ({ url, sectionName }) => {
           selected={currentSelection === 'Shows' && true}
         />
       </div>
-      <div className="grid grid-cols-8 grid-rows-2 gap-y-8">
+      <div className="grid grid-cols-2 grid-rows-2 lg:grid-cols-8 gap-4 lg:gap-y-8">
         {movies.length > 0 &&
           movies.map((movie) => (
             <MovieCard

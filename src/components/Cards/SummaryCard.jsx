@@ -3,7 +3,7 @@ import ImdbTag from '../Common/ImdbTag';
 
 const SummaryCard = ({ movie, showType, numberOfSeasons }) => {
   return (
-    <div className="absolute p-5 z-10 bg-black rounded-2xl border border-white top-1/2">
+    <div className="absolute p-5 z-10 bg-black rounded-2xl border border-white top-1/2 max-lg:hidden">
       <div className="text-xl font-extrabold mb-4">
         {movie?.title || movie?.name}
       </div>

@@ -16,12 +16,12 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/search" element={<SearchResults />} />
+        {/* <Route path="/search" element={<SearchResults />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/shows" element={<TVShows />} />
         <Route path="/showInfo" element={<ShowInfo />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/terms" element={<TermsOfService />} /> */}
       </Routes>
       <Footer />
     </>
