@@ -90,30 +90,30 @@ const ShowInfo = () => {
     (production_company) => production_company.name
   );
 
-  console.log('currentShow', currentShow);
-  console.log('credits.cast', credits.cast);
-  console.log('directors', directors);
-  console.log('reviews', reviews);
+  // console.log('currentShow', currentShow);
+  // console.log('credits.cast', credits.cast);
+  // console.log('directors', directors);
+  // console.log('reviews', reviews);
 
   return !currentShow.id ? (
     <div className="min-h-screen w-full flex items-center justify-center">
       <CircularProgress />
     </div>
   ) : (
-    <div className="px-10 flex flex-col gap-10">
+    <div className="px-5 lg:px-10 flex flex-col gap-10">
       <div className="flex gap-10">
         <div className="flex-2/3">
           {currentShow && show.showType === 'Movies' ? (
-            <div className="flex gap-6">
+            <div className="flex max-lg:flex-col max-lg:items-center gap-6">
               <img
                 src={`https://image.tmdb.org/t/p/original${currentShow.poster_path}`}
                 alt=""
                 className="h-[400px] w-[270px]"
               />
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2 lg:gap-5">
+                <div className="flex flex-col gap-2 ">
                   <h2 className="text-[25px]">{currentShow.title}</h2>
-                  <div className="flex gap-5 items-center">
+                  <div className="flex flex-wrap max-lg:flex-col gap-1 lg:gap-5 lg:items-center">
                     <p>{currentShow.release_date}</p>
                     <div className="flex gap-2 items-center">
                       <StarIcon sx={{ color: 'yellow' }} />
@@ -211,7 +211,7 @@ const ShowInfo = () => {
             </div>
           )}
         </div>
-        <div className="flex-1/3 space-y-5">
+        <div className="flex-1/3 space-y-5 max-lg:hidden">
           <h2 className="text-lg">Similar {show.showType}</h2>
           {similarShows.results &&
             similarShows.results
@@ -228,8 +228,8 @@ const ShowInfo = () => {
       </div>
       {credits.cast?.length > 0 && (
         <div className="">
-          <h2 className="text-4xl font-medium mb-10">Top Cast</h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-w-screen gap-x-10 gap-y-5">
+          <h2 className="text-4xl font-medium mb-5 lg:mb-10">Top Cast</h2>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-w-screen gap-x-10 gap-y-2 lg:gap-y-5">
             {credits.cast?.slice(0, 10).map((cast) => (
               <PeopleProfileCard cast={cast} key={cast.id} />
             ))}
@@ -238,8 +238,8 @@ const ShowInfo = () => {
       )}
       {directors?.length > 0 && (
         <div className="">
-          <h2 className="text-4xl font-medium mb-10">Directors</h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-w-screen gap-x-10 gap-y-5">
+          <h2 className="text-4xl font-medium mb-5 lg:mb-10">Directors</h2>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] max-w-screen gap-x-10 gap-y-2 lg:gap-y-5">
             {credits.crew?.map(
               (crew) =>
                 crew.job === 'Director' && (
@@ -251,12 +251,12 @@ const ShowInfo = () => {
       )}
       {reviews.results?.length > 0 && (
         <div className="">
-          <h2 className="text-4xl font-medium mb-10">User Reviews</h2>
+          <h2 className="text-4xl font-medium mb-5 lg:mb-10">User Reviews</h2>
           <ReviewCarousal reviews={reviews.results} />
         </div>
       )}
       <div className="">
-        <h2 className="text-4xl font-medium mb-10">Backdrop Images</h2>
+        <h2 className="text-4xl font-medium mb-5 lg:mb-10">Backdrop Images</h2>
         {images.backdrops && <ImageCarousal images={images.backdrops} />}
       </div>
     </div>

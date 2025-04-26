@@ -42,7 +42,7 @@ const ReviewCarousal = ({ reviews }) => {
     <div className="flex justify-start items-stretch gap-4">
       {reviews.map((review) => (
         <div className="flex-1" key={review.id}>
-          <div className="h-full flex flex-col justify-between space-y-2 border border-white p-10 rounded-xl">
+          <div className="h-full flex flex-col justify-between space-y-2 border border-white p-2 lg:p-10 rounded-xl">
             <p>
               <span className="font-bold">Author Name :</span> {review.author}
             </p>
@@ -63,11 +63,11 @@ const ReviewCarousal = ({ reviews }) => {
       ))}
     </div>
   ) : (
-    <div className="slider-container h-max">
+    <div className="slider-container h-max max-lg:px-5">
       <Slider {...settings}>
         {reviews.map((review) => (
-          <div className="px-5" key={review.id}>
-            <div className="space-y-2 border border-white p-10 rounded-xl h-full max-h-[210px]">
+          <div className="px-1 lg:px-5 min-h-full" key={review.id}>
+            <div className="space-y-2 border border-white p-2 lg:p-10 rounded-xl  h-full max-h-[210px]">
               <p>
                 <span className="font-bold">Author Name :</span> {review.author}
               </p>

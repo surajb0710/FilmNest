@@ -37,7 +37,7 @@ const ImageCarousal = ({ images }) => {
     ],
   };
   return (
-    <div className="slider-container">
+    <div className="slider-container max-lg:px-5">
       <Slider {...settings}>
         {images.map((image) => (
           <div className="px-2" key={image.file_path}>
