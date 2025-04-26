@@ -140,7 +140,10 @@ const TVShows = () => {
         {sectionName}
       </h1>
       <div className="px-10">
-        <div className="!grid grid-cols-8 gap-y-8" key={currentPage}>
+        <div
+          className="!grid grid-cols-2 grid-rows-2 lg:grid-cols-8 gap-4 lg:gap-y-8"
+          key={currentPage}
+        >
           {uniqueArrayItems(movies).map((movie) => (
             <MovieCard key={movie.id} movie={movie} showType={'Shows'} />
           ))}
